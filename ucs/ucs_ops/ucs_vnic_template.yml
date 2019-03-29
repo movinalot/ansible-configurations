@@ -1,0 +1,48 @@
+  - name: Configure vNIC templates
+    vars:
+      vnics:
+        - {
+            name: 'comp_vnic-a', mac_pool: 'ESX-COMP-MAC-POOL', fabric: 'A', mtu: '1500', peer_redundancy_template: 'comp_vnic-b',
+            redundancy_type: 'primary', target: 'adapter', template_type: 'updating-template', network_control_policy: 'CDP-ENABLE',
+            org_dn: '{{ ORG }}'
+          }
+        - {
+            name: 'comp_vnic-b', mac_pool: 'ESX-COMP-MAC-POOL', fabric: 'B', mtu: '1500', peer_redundancy_template: 'comp_vnic-a',
+            redundancy_type: 'secondary', target: 'adapter', template_type: 'updating-template', network_control_policy: 'CDP-ENABLE',
+            org_dn: '{{ ORG }}'
+          }
+        - {
+            name: 'mgmt_vnic-a', mac_pool: 'ESX-MGMT-MAC-POOL', fabric: 'A', mtu: '1500', peer_redundancy_template: 'mgmt_vnic-b',
+            redundancy_type: 'primary', target: 'adapter', template_type: 'updating-template', network_control_policy: 'CDP-ENABLE',
+            org_dn: '{{ ORG }}'
+          }
+        - {
+            name: 'mgmt_vnic-b', mac_pool: 'ESX-MGMT-MAC-POOL', fabric: 'B', mtu: '1500', peer_redundancy_template: 'mgmt_vnic-a',
+            redundancy_type: 'secondary', target: 'adapter', template_type: 'updating-template', network_control_policy: 'CDP-ENABLE',
+            org_dn: '{{ ORG }}'
+          }
+      vlans:
+        - { name: 'default', native: 'no' } 
+        - { name: 'vlan248', native: 'yes' } 
+      
+    ucs_vnic_template:
+      hostname: "{{ ucs_hostname }}"
+      username: "{{ ucs_username }}"
+      password: "{{ ucs_password }}"
+      name: "{{ item.0.name }}"
+      mac_pool: "{{ item.0.mac_pool }}"
+      fabric: "{{ item.0.fabric }}"
+      mtu: "{{ item.0.mtu }}"
+      peer_redundancy_template: "{{ item.0.peer_redundancy_template }}"
+      redundancy_type: "{{ item.0.redundancy_type }}"
+      target: "{{ item.0.target }}"
+      template_type: "{{ item.0.template_type }}"
+      network_control_policy: "{{ item.0.network_control_policy }}"
+      org_dn: "{{ item.0.org_dn }}"
+
+      vlans_list:
+      - name: "{{ item.1.name }}"
+        native: "{{ item.1.native }}"
+    with_nested:
+      - "{{ vnics }}"
+      - "{{ vlans }}"

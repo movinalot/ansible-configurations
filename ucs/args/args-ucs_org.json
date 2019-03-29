@@ -1,0 +1,12 @@
+{
+    "ANSIBLE_MODULE_ARGS": {
+        "hostname": "128.107.70.5",
+        "username": "admin",
+        "password": "C1sco12345",
+        "org_name": "test-level1",
+        "state": "present",
+        "description": "test level 1",
+        "parent_org_path": "root",
+        "delegate_to": "localhost"
+    }
+}

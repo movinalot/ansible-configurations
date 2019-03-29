@@ -1,0 +1,58 @@
+---
+#
+# site.yml - Adding UCS Manager VLANs and VNIC Templates with loops
+#
+# Author: John McDonough (jomcdono@cisco.com)
+#         Cisco Systems, Inc.
+#
+
+- hosts: ucs
+  connection: local
+  gather_facts: no
+
+  tasks:
+  - name: Test that we have a UCS host, UCS username, and UCS password
+    fail:
+      msg: 'Please define the following variables: ucs_hostname, ucs_username and ucs_password.'
+    when: ucs_hostname is not defined or ucs_username is not defined or ucs_password is not defined
+    vars:
+      login_info: &login_info
+        hostname: "{{ ucs_hostname }}"
+        username: "{{ ucs_username }}"
+        password: "{{ ucs_password }}"
+
+  - name: Configure VLANs
+    ucs_vlans:
+      <<: *login_info
+      name: "vlan{{ item.id }}"
+      id: "{{ item.id }}" 
+      native: "{{ item.native }}" 
+    loop:
+      - { id: '100', native: 'no' } 
+      - { id: '101', native: 'no' } 
+      - { id: '102', native: 'no' } 
+      - { id: '103', native: 'no' } 
+      - { id: '104', native: 'no' }
+
+  - name: Configure vNIC templates
+    vars:
+      vnics:
+        - { name: 'vnic-prod-a', fabric: 'A' }
+        - { name: 'vnic-prod-b', fabric: 'B' }
+        - { name: 'vnic-test-a', fabric: 'A' }
+        - { name: 'vnic-test-b', fabric: 'B' }
+      vlans:
+        - { name: 'vlan100', native: 'no' } 
+        - { name: 'vlan101', native: 'no' } 
+      
+    ucs_vnic_template:
+      <<: *login_info
+      name: "{{ item.0.name }}"
+      fabric: "{{ item.0.fabric }}"
+
+      vlans_list:
+      - name: "{{ item.1.name }}"
+        native: "{{ item.1.native }}"
+    with_nested:
+      - "{{ vnics }}"
+      - "{{ vlans }}"

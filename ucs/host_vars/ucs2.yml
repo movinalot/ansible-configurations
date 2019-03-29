@@ -1,0 +1,3 @@
+VLANS:
+      - { name: 'ucs2', id: '300', native: 'no' }
+      - { name: 'ucs2', id: '301', native: 'no' }

@@ -1,0 +1,69 @@
+---
+#
+#
+# Author: John McDonough (jomcdono@cisco.com)
+#         Cisco Systems, Inc.
+#
+
+- hosts: ucs
+  connection: local
+  gather_facts: no
+
+  tasks:
+  - name: Test that we have a UCS host, UCS username, and UCS password
+    fail:
+      msg: 'Please define the following variables: ucs_hostname, ucs_username and ucs_password.'
+    when: ucs_hostname is not defined or ucs_username is not defined or ucs_password is not defined
+    vars:
+      login_info: &login_info
+        hostname: "{{ ucs_hostname }}"
+        username: "{{ ucs_username }}"
+        password: "{{ ucs_password }}"
+
+  - name: Add UCS Organization
+    ucs_org:
+      <<: *login_info
+      org_name: test
+      description: testing org
+      state: present
+      delegate_to: localhost
+
+  - name: Update UCS Organization
+    ucs_org:
+      <<: *login_info
+      org_name: test
+      description: Testing org
+      state: present
+      delegate_to: localhost
+
+  - name: Add UCS Organization
+    ucs_org:
+      <<: *login_info
+      org_name: level1
+      parent_org_path: root
+      description: level1 org
+      state: present
+      delegate_to: localhost
+
+  - name: Add UCS Organization
+    ucs_org:
+      <<: *login_info
+      org_name: level2
+      parent_org_path: root/level1
+      description: level2 org
+      state: present
+
+  - name: Add UCS Organization
+    ucs_org:
+      <<: *login_info
+      org_name: level3
+      parent_org_path: root/level1/level2
+      description: level3 org
+      state: present
+
+  - name: Remove UCS Organization
+    ucs_org:
+      <<: *login_info
+      org_name: level2
+      parent_org_path: root/level1
+      state: absent

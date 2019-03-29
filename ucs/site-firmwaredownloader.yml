@@ -1,0 +1,42 @@
+---
+#
+#
+# Author: John McDonough (jomcdono@cisco.com)
+#         Cisco Systems, Inc.
+#
+
+- hosts: ucs
+  connection: local
+  gather_facts: no
+
+  tasks:
+  - name: Test that we have a UCS hostname, UCS username, and UCS password
+    fail:
+      msg: 'Please define the following variables: ucs_hostname, ucs_username and ucs_password.'
+    when: ucs_hostname is not defined or ucs_username is not defined or ucs_password is not defined
+    vars:
+      login_info: &login_info
+        hostname: "{{ ucs_hostname }}"
+        username: "{{ ucs_username }}"
+        password: "{{ ucs_password }}"
+
+  - name: FirmwareDownloader - YAML
+    ucs_managed_objects:
+      <<: *login_info
+      objects:
+      - module: ucsmsdk.mometa.firmware.FirmwareDownloader
+        class: FirmwareDownloader
+        properties:
+            parent_mo_or_dn: sys/fw-catalogue
+            file_name: "{{ item.file_name }}"
+            protocol: "{{ firmware_protocol }}"
+            remote_path: "{{ firmware_remote_path }}"
+            server: "{{ firmware_server }}"
+            user: "{{ firmware_user }}"
+            pwd: "{{ firmware_pwd }}"
+            admin_state: restart
+      state: "{{ ucs_state }}"
+    loop:
+      - { file_name: 'ucs-k9-bundle-infra.4.0.2d.A.bin' }
+      - { file_name: 'ucs-k9-bundle-b-series.4.0.2d.B.bin' }
+      - { file_name: 'ucs-k9-bundle-c-series.4.0.2d.C.bin' }

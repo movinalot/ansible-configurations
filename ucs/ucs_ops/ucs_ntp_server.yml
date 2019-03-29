@@ -1,0 +1,11 @@
+  - name: Add UCS NTP Server
+    ucs_ntp_server:
+      hostname: "{{ ucs_hostname }}"
+      username: "{{ ucs_username }}"
+      password: "{{ ucs_password }}"
+      ntp_server: "{{ item.ntp_server }}"
+      description: "{{ item.description }}"
+      state: present
+    loop:
+      - { ntp_server: '171.70.168.183', description: 'NTP Server 1 IP address' } 
+      - { ntp_server: '172.22.249.101', description: 'NTP Server 2 IP address' }

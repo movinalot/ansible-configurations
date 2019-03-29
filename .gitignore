@@ -1,0 +1,8 @@
+#VSCode stuff..
+.vscode/
+# Mac OS X stuff...
+.DS_Store
+# UCS and Intersight Ansible stuff...
+intersight/intersight-Ansible
+intersight/Secret*
+ucs/ucsm-ansible

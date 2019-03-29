@@ -1,0 +1,19 @@
+  - name: Configure MAC address pool
+    ucs_mac_pool:
+      hostname: "{{ ucs_hostname }}"
+      username: "{{ ucs_username }}"
+      password: "{{ ucs_password }}"
+      name: "{{ item.name }}"
+      first_addr: "{{ item.first_addr }}"
+      last_addr: "{{ item.last_addr }}"
+      order: "{{ item.order }}"
+      org_dn: "{{ item.org_dn }}"
+    loop:
+      - {
+          name: 'ESX-COMP-MAC-POOL', description: 'ESX COMP MAC POOL', first_addr: '00:25:B5:14:02:80',
+          last_addr: '00:25:B5:14:02:FF', order: 'sequential', org_dn: '{{ ORG }}'
+        }
+      - {
+          name: 'ESX-MGMT-MAC-POOL', description: 'ESX COMP MAC POOL', first_addr: '00:25:B5:14:02:00',
+          last_addr: '00:25:B5:14:02:7F', order: 'sequential', org_dn: '{{ ORG }}'
+        }

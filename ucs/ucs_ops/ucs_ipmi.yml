@@ -1,0 +1,23 @@
+  - name: IPMI enable policy
+    ucs_ipmi:
+      hostname: "{{ ucs_hostname }}"
+      username: "{{ ucs_username }}"
+      password: "{{ ucs_password }}"
+      name: ipmi-enable
+      description: Policy to enable IPMI
+      ipmi_over_lan: enable
+      org_dn: org-root/org-PROD
+      delegate_to: localhost
+      state: "{{ ucs_state }}"
+
+  - name: IPMI disable policy
+    ucs_ipmi:
+      hostname: "{{ ucs_hostname }}"
+      username: "{{ ucs_username }}"
+      password: "{{ ucs_password }}"
+      name: ipmi-disable
+      description: Policy to disable IPMI
+      ipmi_over_lan: disable
+      org_dn: org-root/org-PROD
+      delegate_to: localhost
+      state: "{{ ucs_state }}"

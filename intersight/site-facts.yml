@@ -1,0 +1,20 @@
+---
+
+- hosts: localhost
+  connection: local
+  gather_facts: no
+  vars:
+    api_info: &api_info
+      api_private_key: "{{ api_private_key }}"
+      api_key_id: "{{ api_key_id }}"
+    target: intersight-devnet
+
+  tasks:
+    - name: get facts for servers
+      intersight_facts:
+        <<: *api_info
+        server_names: [devnet-dmz-hx-1, devnet-dmz-hx-2]
+      register: result
+
+    - name: print facts for servers
+      debug: msg="{{ result }}"

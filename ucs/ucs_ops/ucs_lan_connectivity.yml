@@ -1,0 +1,33 @@
+ # - name: Configure LAN Connectivity Policy
+ #   ucs_lan_connectivity:
+ #     hostname: "{{ ucs_hostname }}"
+ #     username: "{{ ucs_username }}"
+ #     password: "{{ ucs_password }}"
+ #     name: Cntr-FC-Boot
+ #     vnic_list:
+ #     - name: eno1
+ #       vnic_template: Cntr-Template
+ #       adapter_policy: Linux
+ #     - name: eno2
+ #       vnic_template: Container-NFS-A
+ #       adapter_policy: Linux
+ #     - name: eno3
+ #       vnic_template: Container-NFS-B
+ #       adapter_policy: Linux
+ #     iscsi_vnic_list:
+ #     - name: iSCSIa
+ #       overlay_vnic: eno1
+ #       iscsi_adapter_policy: default
+ #       vlan_name: Container-MGMT-VLAN
+ #     - name: iSCSIb
+ #       overlay_vnic: eno3
+ #       iscsi_adapter_policy: default
+ #       vlan_name: Container-TNT-A-NFS
+
+  - name: Remove LAN Connectivity Policy
+    ucs_lan_connectivity:
+      hostname: "{{ ucs_hostname }}"
+      username: "{{ ucs_username }}"
+      password: "{{ ucs_password }}"
+      name: Cntr-FC-Boot
+      state: absent

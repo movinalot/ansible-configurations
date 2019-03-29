@@ -1,0 +1,88 @@
+---
+#
+#
+# Author: John McDonough (jomcdono@cisco.com)
+#         Cisco Systems, Inc.
+#
+
+- hosts: ucs
+  connection: local
+  gather_facts: no
+
+  vars:
+    run_ucs_timezone: false
+    run_ucs_ntp_server: false
+    run_ucs_dns_server: false
+    run_ucs_org: false
+    run_ucs_vlan: false
+    run_ucs_network_control: false
+    run_ucs_mac_pool: false
+    run_ucs_vnic_template: false
+    run_ucs_disk_group_policy: false
+    run_ucs_storage_profile_mo: false
+    run_ucs_service_profile_template: false
+    run_ucs_lan_connectivity: false
+    run_ucs_ipmi: true
+
+  tasks:
+  - name: Test that we have a UCS host, UCS username, and UCS password
+    fail:
+      msg: 'Please define the following variables: ucs_hostname, ucs_username and ucs_password.'
+    when: ucs_hostname is not defined or ucs_username is not defined or ucs_password is not defined
+    vars:
+      login_info: &login_info
+        hostname: "{{ ucs_hostname }}"
+        username: "{{ ucs_username }}"
+        password: "{{ ucs_password }}"
+
+  - include_tasks: ucs_ops/ucs_timezone.yml
+    name: UCS Timezone
+    when: 'run_ucs_timezone == True'
+
+  - include_tasks: ucs_ops/ucs_ntp_server.yml
+    name: UCS NTP Servers
+    when: 'run_ucs_ntp_server == True'
+
+  - include_tasks: ucs_ops/ucs_dns_server.yml
+    name: UCS DNS Servers
+    when: 'run_ucs_dns_server == True'
+
+  - include_tasks: ucs_ops/ucs_org_new.yml
+    name: UCS Organization
+    when: 'run_ucs_org == True'
+
+  - include_tasks: ucs_ops/ucs_vlan.yml
+    name: UCS VLAN
+    when: 'run_ucs_vlan == True'
+
+  - include_tasks: ucs_ops/ucs_network_control.yml
+    name: UCS Network Control Policy
+    when: 'run_ucs_network_control == True'
+
+  - include_tasks: ucs_ops/ucs_mac_pool.yml
+    name: UCS MAC Pool
+    when: 'run_ucs_mac_pool == True'
+
+  - include_tasks: ucs_ops/ucs_vnic_template.yml
+    name: UCS VNIC Template
+    when: 'run_ucs_vnic_template == True'
+
+  - include_tasks: ucs_ops/ucs_disk_group_policy.yml
+    name: UCS Disk Group Policy
+    when: 'run_ucs_disk_group_policy == True'
+
+  - include_tasks: ucs_ops/ucs_storage_profile_mo.yml
+    name: UCS Storage Profile using ucs_managed_objects
+    when: 'run_ucs_storage_profile_mo == True'
+
+  - include_tasks: ucs_ops/ucs_service_profile_template.yml
+    name: UCS Service Profile Template
+    when: 'run_ucs_service_profile_template == True'
+
+  - include_tasks: ucs_ops/ucs_lan_connectivity.yml
+    name: UCS LAN Connectivity
+    when: 'run_ucs_lan_connectivity == True'
+
+  - include_tasks: ucs_ops/ucs_ipmi.yml
+    name: UCS IPMI Policy
+    when: 'run_ucs_ipmi == True'

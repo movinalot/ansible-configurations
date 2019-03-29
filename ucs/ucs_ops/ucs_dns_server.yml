@@ -1,0 +1,14 @@
+  - name: Configure DNS server
+    ucs_dns_server:
+      hostname: "{{ ucs_hostname }}"
+      username: "{{ ucs_username }}"
+      password: "{{ ucs_password }}"
+      dns_server: "{{ item.dns_server }}"
+      description: "{{ item.description }}"
+      state: present
+      delegate_to: localhost
+    loop:
+      "{{ DNS_SERVERS }}"
+#      These are in group_vars/all
+#      - { dns_server: '171.70.168.183', description: 'DNS Server 1 IP address' }
+#      - { dns_server: '172.22.249.101', description: 'DNS Server 2 IP address' }
