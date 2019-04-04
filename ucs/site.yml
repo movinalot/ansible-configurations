@@ -10,7 +10,7 @@
   gather_facts: no
 
   vars:
-    run_ucs_timezone: false
+    run_ucs_timezone: true
     run_ucs_ntp_server: false
     run_ucs_dns_server: false
     run_ucs_org: false
