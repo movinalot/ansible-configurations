@@ -1,0 +1,34 @@
+---
+#
+#
+# Author: John McDonough (jomcdono@cisco.com)
+#         Cisco Systems, Inc.
+#
+
+- hosts: ucs
+  connection: local
+  gather_facts: no
+
+  tasks:
+  - name: Test that we have a UCS hostname, UCS username, and UCS password
+    fail:
+      msg: 'Please define the following variables: ucs_hostname, ucs_username and ucs_password.'
+    when: ucs_hostname is not defined or ucs_username is not defined or ucs_password is not defined
+    vars:
+      login_info: &login_info
+        hostname: "{{ ucs_hostname }}"
+        username: "{{ ucs_username }}"
+        password: "{{ ucs_password }}"
+
+  - name: Configure VLANs
+    ucs_vlans:
+      <<: *login_info
+      name: "vlan{{ item.id }}"
+      id: "{{ item.id }}" 
+      native: "{{ item.native }}" 
+      state: present
+    loop:
+      - { id: '300', native: 'no' }
+      - { id: '301', native: 'no' }
+      - { id: '302', native: 'no' }
+      - { id: '303', native: 'no' }
