@@ -1,0 +1,53 @@
+---
+
+- hosts: aci
+  connection: local
+  gather_facts: no
+
+  tasks:
+  - name: Ensure tenant exists
+    aci_tenant:
+      host: "{{ aci_hostname }}"
+      username: "{{ aci_username }}"
+      password: "{{ aci_password }}"
+      tenant: "{{ tenant_name }}"
+      state: "{{ aci_state }}"
+      description: "Tenant Created Using Ansible ABC"
+      validate_certs: false
+
+  - name: ENSURE TENANT VRF EXISTS
+    aci_vrf:
+      host: "{{ aci_hostname }}"
+      username: "{{ aci_username }}"
+      password: "{{ aci_password }}"
+      state: "{{ aci_state }}"
+      validate_certs: False
+      tenant: "{{ tenant_name }}"
+      vrf: "{{ vrf | default('prod_vrf')}}"
+      description: "VRF Created Using Ansible"
+
+  - name: ENSURE TENANT BRIDGE DOMAIN EXISTS
+    aci_bd:
+      host: "{{ aci_hostname }}"
+      username: "{{ aci_username }}"
+      password: "{{ aci_password }}"
+      validate_certs: False
+      state: "{{ aci_state }}"
+      tenant: "{{ tenant_name }}"
+      bd: "{{ bd | default('prod_bd') }}"
+      vrf: "{{ vrf | default('prod_vrf')}}"
+      description: "BD Created Using Ansible"
+
+  - name: ENSURE TENANT SUBNET EXISTS
+    aci_bd_subnet:
+      host: "{{ aci_hostname }}"
+      username: "{{ aci_username }}"
+      password: "{{ aci_password }}"
+      validate_certs: False
+      state: "{{ aci_state }}"
+      tenant: "{{ tenant_name }}"
+      bd: "{{ bd | default('prod_bd')}}"
+      gateway: "10.1.100.1"
+      mask: 24
+      scope: "public"
+      description: "Subnet Created Using Ansible"
