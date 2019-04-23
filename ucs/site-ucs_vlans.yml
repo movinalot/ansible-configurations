@@ -30,3 +30,5 @@
     loop:
       - { id: '300', native: 'no' }
       - { id: '301', native: 'no' }
+      - { id: '302', native: 'no' }
+      - { id: '303', native: 'no' }
