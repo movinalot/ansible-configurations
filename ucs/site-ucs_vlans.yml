@@ -26,7 +26,7 @@
       name: "vlan{{ item.id }}"
       id: "{{ item.id }}" 
       native: "{{ item.native }}" 
-      state: present
+      state: absent
     loop:
       - { id: '300', native: 'no' }
       - { id: '301', native: 'no' }
