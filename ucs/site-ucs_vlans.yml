@@ -5,7 +5,8 @@
 #         Cisco Systems, Inc.
 #
 
-- hosts: ucs
+- name: UCS VLAN Managment
+  hosts: ucs
   connection: local
   gather_facts: no
 
@@ -26,7 +27,7 @@
       name: "vlan{{ item.id }}"
       id: "{{ item.id }}" 
       native: "{{ item.native }}" 
-      state: absent
+      state: present
     loop:
       - { id: '100', native: 'no' }
       - { id: '101', native: 'no' }
