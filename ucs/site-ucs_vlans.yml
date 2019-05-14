@@ -25,9 +25,9 @@
     ucs_vlans:
       <<: *login_info
       name: "{{ item.name }}"
-      id: "{{ item.id }}" 
-      native: "{{ item.native }}" 
-      state: present
+      id: "{{ item.id }}"
+      native: "{{ item.native }}"
+      state: absent
     loop:
       - { name: 'dev', id: '100', native: 'no' }
       - { name: 'prod', id: '101', native: 'no' }
