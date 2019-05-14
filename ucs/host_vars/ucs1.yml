@@ -1,3 +1,4 @@
-VLANS:
-      - { name: 'ucs1', id: '100', native: 'no' }
-      - { name: 'ucs1', id: '101', native: 'no' }
+vlans:
+  - { name: 'dev', id: '100', native: 'no' }
+  - { name: 'prod', id: '101', native: 'no' }
+  - { name: 'test', id: '102', native: 'no' }
