@@ -2,16 +2,17 @@
 ###########################################################
 #           Playbook to configure nxos switches           #
 ###########################################################
-  - name: Retrieve facts from nxos switches
-    hosts: nxos-switches
+  - name: Configure VLANs
+    hosts: nxos_switches
     connection: local
+    gather_facts: no
 
     tasks:
     - name: "Configure VLANs"
-      with_items: "{{ vlans }}"
       nxos_vlan:
         host: "{{ inventory_hostname }}"
         vlan_id: "{{ item.vlan_id }}"
         name: "{{ item.name }} "
         state: present
         transport: nxapi
+      with_items: "{{ vlans }}"
