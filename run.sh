@@ -12,10 +12,9 @@ git pull
 $(ansible-vault view env_vars.yml --vault-password-file ~/.vault_pass.txt)
 
 #### Cycle through cmdline parameters, each one represents an Ansible
-#### configuration. A parameter representing an Ansible configuration
+#### configuration directory. A parameter representing a configuration
 #### will only be passed to this script if an update was detected to
-#### its' site.yml
-####
+#### files in it's directory.
 
 for DOMAIN in "$@"
 do
