@@ -19,7 +19,7 @@ $(ansible-vault view env_vars.yml --vault-password-file ~/.vault_pass.txt)
 
 for DOMAIN in "$@"
 do
-  echo ${DOMAIN}
+  echo "Processing site.yml for domain: " ${DOMAIN}
   cd ${DOMAIN}
   ansible-playbook -i inventory site.yml
   cd ..
