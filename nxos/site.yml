@@ -1,7 +1,13 @@
 ---
+
+#
+# Author: John McDonough (jomcdono@cisco.com)
+#         Cisco Systems, Inc.
+#
 ###########################################################
 #           Playbook to configure nxos switches           #
 ###########################################################
+
   - name: Configure VLANs
     hosts: nxos_switches
     connection: local

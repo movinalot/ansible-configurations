@@ -1,5 +1,3 @@
 ansible_connection: httpapi
 ansible_network_os: nxos
-#ansible_user: admin
-#ansible_password: C1sco12345
 ansible_python_interpreter: ~/projects/webhook-listener-venv/bin/python

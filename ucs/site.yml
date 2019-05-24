@@ -1,26 +1,29 @@
 ---
 
-
 #
 # Author: John McDonough (jomcdono@cisco.com)
 #         Cisco Systems, Inc.
 #
+###########################################################
+#           Playbook to configure UCS VLANs               #
+###########################################################
 
-- name: UCS VLAN Managment
+- name: UCS VLAN Management
   hosts: ucs
   connection: local
   gather_facts: no
 
   tasks:
-  - name: Test that we have a UCS hostname, UCS username, and UCS password
+  - name: Test that we have a UCS hostname, username, and password
     fail:
-      msg: 'Please define the following variables: ucs_hostname, ucs_username and ucs_password.'
+      msg: 'Please define the variables: ucs_hostname, ucs_username and ucs_password.'
     when: ucs_hostname is not defined or ucs_username is not defined or ucs_password is not defined
     vars:
       login_info: &login_info
         hostname: "{{ ucs_hostname }}"
         username: "{{ ucs_username }}"
         password: "{{ ucs_password }}"
+      ucs_state: present
 
   - name: Configure VLANs
     ucs_vlans:
@@ -28,7 +31,7 @@
       name: "{{ item.name }}"
       id: "{{ item.id }}"
       native: "{{ item.native }}"
-      state: present
+      state: "{{ ucs_state }}"
     loop:
       "{{ vlans }}"
 

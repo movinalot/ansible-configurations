@@ -1,53 +1,65 @@
 ---
 
-- hosts: aci
+#
+# Author: John McDonough (jomcdono@cisco.com)
+#         Cisco Systems, Inc.
+#
+###########################################################
+#           Playbook to configure ACI Tenant              #
+###########################################################
+
+- name: ACI Tenant Management
+  hosts: aci
   connection: local
   gather_facts: no
 
   tasks:
-  - name: Ensure tenant exists
+  - name: Test that we have an ACI hostname, username, and password
+    fail:
+      msg: 'Please define the variables: aci_hostname, aci_username and aci_password.'
+    when: aci_hostname is not defined or aci_username is not defined or aci_password is not defined
+    vars:
+      login_info: &login_info
+        hostname: "{{ aci_hostname }}"
+        username: "{{ aci_username }}"
+        password: "{{ aci_password }}"
+      aci_state: present
+
+  - name: Configure Tenant
     aci_tenant:
-      hostname: "{{ aci_hostname }}"
-      username: "{{ aci_username }}"
-      password: "{{ aci_password }}"
+      <<: *login_info
       tenant: "{{ tenant_name }}"
-      state: "{{ aci_state }}"
       description: "Tenant Created Using Ansible"
+      state: "{{ aci_state }}"
       validate_certs: false
 
   - name: ENSURE TENANT VRF EXISTS
     aci_vrf:
-      host: "{{ aci_hostname }}"
-      username: "{{ aci_username }}"
-      password: "{{ aci_password }}"
-      state: "{{ aci_state }}"
-      validate_certs: False
+      <<: *login_info
       tenant: "{{ tenant_name }}"
       vrf: "{{ vrf | default('prod_vrf')}}"
       description: "VRF Created Using Ansible"
+      state: "{{ aci_state }}"
+      validate_certs: false
 
   - name: ENSURE TENANT BRIDGE DOMAIN EXISTS
     aci_bd:
-      host: "{{ aci_hostname }}"
-      username: "{{ aci_username }}"
-      password: "{{ aci_password }}"
-      validate_certs: False
-      state: "{{ aci_state }}"
+      <<: *login_info
       tenant: "{{ tenant_name }}"
       bd: "{{ bd | default('prod_bd') }}"
       vrf: "{{ vrf | default('prod_vrf')}}"
       description: "BD Created Using Ansible"
+      state: "{{ aci_state }}"
+      validate_certs: false
 
   - name: ENSURE TENANT SUBNET EXISTS
     aci_bd_subnet:
-      host: "{{ aci_hostname }}"
-      username: "{{ aci_username }}"
-      password: "{{ aci_password }}"
-      validate_certs: False
-      state: "{{ aci_state }}"
+      <<: *login_info
       tenant: "{{ tenant_name }}"
       bd: "{{ bd | default('prod_bd')}}"
       gateway: "10.1.100.1"
       mask: 24
       scope: "public"
       description: "Subnet Created Using Ansible"
+      state: "{{ aci_state }}"
+      validate_certs: false
