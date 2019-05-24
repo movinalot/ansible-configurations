@@ -1,4 +1,4 @@
-nxos_state: present
+nxos_state: absent
 ansible_connection: httpapi
 ansible_network_os: nxos
 ansible_python_interpreter: ~/projects/webhook-listener-venv/bin/python

@@ -1,4 +1,4 @@
-ucs_state: present
+ucs_state: absent
 ucs_username: admin
 ucs_password: C1sco12345
 ansible_python_interpreter: ~/projects/webhook-listener-venv/bin/python

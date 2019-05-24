@@ -16,7 +16,7 @@
     tasks:
     - name: "Configure VLANs"
       nxos_vlan:
-        host: "{{ inventory_hostname }}"
+        host: "{{ nxos_hostname }}"
         vlan_id: "{{ item.vlan_id }}"
         name: "{{ item.name }} "
         state: "{{ nxos_state }}"
