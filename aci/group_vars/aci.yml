@@ -1,4 +1,4 @@
 aci_username: admin
 aci_password: ciscopsdt
-aci_state: present
+aci_state: absent
 ansible_python_interpreter: ~/projects/webhook-listener-venv/bin/python
