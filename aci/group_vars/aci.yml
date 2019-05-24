@@ -1,4 +1,6 @@
-aci_state: absent
+aci_state: present
 aci_username: admin
 aci_password: ciscopsdt
 ansible_python_interpreter: ~/projects/webhook-listener-venv/bin/python
+
+tenant_name: App_tenant
