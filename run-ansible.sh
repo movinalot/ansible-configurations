@@ -21,6 +21,11 @@ do
   echo "Processing site.yml for domain: " ${DOMAIN}
   cd ${DOMAIN}
   ansible-playbook -i inventory site.yml
+
+  if [[ -e site.retry ]]; then
+    rm site.retry
+  fi
+  
   cd ..
 done
 
