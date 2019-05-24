@@ -1,4 +1,4 @@
 vlans:
-  - { name: 'dev', id: '100', native: 'no' }
-  - { name: 'prod', id: '101', native: 'no' }
-  - { name: 'test', id: '102', native: 'no' }
+  - { name: 'dev', id: '1000', native: 'no' }
+  - { name: 'prod', id: '1001', native: 'no' }
+  - { name: 'test', id: '1002', native: 'no' }
