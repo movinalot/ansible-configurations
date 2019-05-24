@@ -1,3 +1,0 @@
-api_private_key: './SecretKey-main.txt'
-api_key_id: ''
-resource_state: present
