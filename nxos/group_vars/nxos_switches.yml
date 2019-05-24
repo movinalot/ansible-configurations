@@ -1,4 +1,0 @@
-vlans:
-  - { name: 'dev', vlan_id: '1000', native: 'no' }
-  - { name: 'prod', vlan_id: '1001', native: 'no' }
-  - { name: 'test', vlan_id: '1002', native: 'no' }

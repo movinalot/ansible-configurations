@@ -9,16 +9,15 @@
 ###########################################################
 
   - name: Configure VLANs
-    hosts: nxos_switches
+    hosts: nxos
     connection: local
     gather_facts: no
 
     tasks:
     - name: "Configure VLANs"
       nxos_vlan:
-        host: "{{ nxos_hostname }}"
+        host: "{{ inventory_hostname }}"
         vlan_id: "{{ item.vlan_id }}"
         name: "{{ item.name }} "
         state: "{{ nxos_state }}"
-        transport: nxapi
       with_items: "{{ vlans }}"
