@@ -19,6 +19,6 @@
         host: "{{ inventory_hostname }}"
         vlan_id: "{{ item.vlan_id }}"
         name: "{{ item.name }} "
-        state: present
+        state: "{{ nxos_state }}"
         transport: nxapi
       with_items: "{{ vlans }}"

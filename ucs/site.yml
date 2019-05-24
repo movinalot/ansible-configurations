@@ -23,7 +23,6 @@
         hostname: "{{ ucs_hostname }}"
         username: "{{ ucs_username }}"
         password: "{{ ucs_password }}"
-      ucs_state: present
 
   - name: Configure VLANs
     ucs_vlans:

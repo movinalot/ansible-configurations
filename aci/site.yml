@@ -23,7 +23,6 @@
         hostname: "{{ aci_hostname }}"
         username: "{{ aci_username }}"
         password: "{{ aci_password }}"
-      aci_state: present
 
   - name: Configure Tenant
     aci_tenant:
