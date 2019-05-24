@@ -7,12 +7,12 @@
   tasks:
   - name: Ensure tenant exists
     aci_tenant:
-      host: "{{ aci_hostname }}"
+      hostname: "{{ aci_hostname }}"
       username: "{{ aci_username }}"
       password: "{{ aci_password }}"
       tenant: "{{ tenant_name }}"
       state: "{{ aci_state }}"
-      description: "Tenant Created Using Ansible ABC"
+      description: "Tenant Created Using Ansible"
       validate_certs: false
 
   - name: ENSURE TENANT VRF EXISTS

@@ -1,4 +1,3 @@
 aci_username: admin
 aci_password: ciscopsdt
 aci_state: present
-ansible_python_interpreter: ~/projects/ansible/venv/bin/python
