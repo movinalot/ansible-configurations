@@ -27,7 +27,7 @@
       name: "{{ item.name }}"
       id: "{{ item.id }}"
       native: "{{ item.native }}"
-      state: present
+      state: absent
     loop:
       "{{ vlans }}"
 
