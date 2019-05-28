@@ -1,4 +1,4 @@
-nxos_state: present
+nxos_state: absent
 ansible_user: admin
 # Protect variable with ansible-vault, here is how to make the vault string below
 # ansible-vault encrypt_string --vault-id ~/.vault_pass.txt 'admin' --name 'ansible_user'
