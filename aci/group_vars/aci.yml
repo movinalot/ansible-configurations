@@ -1,4 +1,4 @@
-aci_state: present
+aci_state: absent
 
 tenant_name: App_Tenant
 vrf: app_vrf
