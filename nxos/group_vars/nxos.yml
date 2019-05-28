@@ -1,4 +1,4 @@
-nxos_state: present
+nxos_state: absent
 
 vlans:
   - { name: 'dev', vlan_id: '1000', native: 'no' }
