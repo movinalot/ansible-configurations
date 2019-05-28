@@ -1,4 +1,11 @@
 aci_state: absent
+
+tenant_name: App_Tenant
+vrf: app_vrf
+bridge_domain: app_bd
+gateway: "10.1.100.1"
+mask: 24
+
 aci_username: admin
 # Protect variable with ansible-vault, here is how to make the vault string below
 # ansible-vault encrypt_string --vault-id ~/.vault_pass.txt 'admin' --name 'aci_username'
@@ -20,11 +27,3 @@ aci_password: ciscopsdt
 #          3932646264373066310a363061373366376163366238643666333634626261613434393963306530
 #          3465
 ansible_python_interpreter: ~/projects/webhook-listener-venv/bin/python
-
-tenant_name: App_Tenant
-vrf: app_vrf
-bridge_domain: app_bd
-gateway: "10.1.100.1"
-mask: 24
-
-

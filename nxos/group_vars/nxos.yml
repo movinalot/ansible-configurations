@@ -1,4 +1,12 @@
 nxos_state: absent
+
+vlans:
+  - { name: 'dev', vlan_id: '1000', native: 'no' }
+  - { name: 'prod', vlan_id: '1001', native: 'no' }
+  - { name: 'test', vlan_id: '1002', native: 'no' }
+
+vlan_range: "1000-1002"
+
 ansible_user: admin
 # Protect variable with ansible-vault, here is how to make the vault string below
 # ansible-vault encrypt_string --vault-id ~/.vault_pass.txt 'admin' --name 'ansible_user'
@@ -22,10 +30,3 @@ ansible_password: C1sco12345
 ansible_connection: httpapi
 ansible_network_os: nxos
 ansible_python_interpreter: ~/projects/webhook-listener-venv/bin/python
-
-vlans:
-  - { name: 'dev', vlan_id: '1000', native: 'no' }
-  - { name: 'prod', vlan_id: '1001', native: 'no' }
-  - { name: 'test', vlan_id: '1002', native: 'no' }
-
-vlan_range: "1000-1002"

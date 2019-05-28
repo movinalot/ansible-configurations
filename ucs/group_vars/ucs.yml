@@ -1,4 +1,10 @@
 ucs_state: absent
+
+vlans:
+  - { name: 'dev', id: '1000', native: 'no' }
+  - { name: 'prod', id: '1001', native: 'no' }
+  - { name: 'test', id: '1002', native: 'no' }
+
 #ucs_username: admin
 # Protect variable with ansible-vault, here is how to make the vault string below
 # ansible-vault encrypt_string --vault-id ~/.vault_pass.txt 'admin' --name 'ucs_username'
@@ -20,8 +26,3 @@ ucs_password: !vault |
           3266656335656465620a646239326233313536303939306562353239623465623233633366363465
           6338
 ansible_python_interpreter: ~/projects/webhook-listener-venv/bin/python
-
-vlans:
-  - { name: 'dev', id: '1000', native: 'no' }
-  - { name: 'prod', id: '1001', native: 'no' }
-  - { name: 'test', id: '1002', native: 'no' }
