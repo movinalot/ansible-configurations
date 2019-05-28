@@ -1,4 +1,24 @@
 nxos_state: absent
+# ansible_user: admin
+# Protect variable with ansible-vault, here is how to make the vault string below
+# ansible-vault encrypt_string --vault-id ~/.vault_pass.txt 'admin' --name 'ansible_user'
+ansible_user: !vault |
+          $ANSIBLE_VAULT;1.1;AES256
+          66373261333432376232346562366366636531346138656630363638306266626333616532396266
+          6430383163386235343335643166313565386237303663350a643361333633643664393362323261
+          39396430396363366665383765656236663663623861633364653237663565333238306163383461
+          3832633938663130350a373162383837393939653938633330646463653866393030663939353761
+          3634
+# ansible_password: password
+# Protect variable with ansible-vault, here is how to make the vault string below
+# ansible-vault encrypt_string --vault-id ~/.vault_pass.txt 'C1sco12345' --name 'ansible_password'
+ansible_password: !vault |
+          $ANSIBLE_VAULT;1.1;AES256
+          61666161623239343066613864363265643639386430656463636433366130383431373133336339
+          6339633933626235393563353333326566356166633634350a343562333035316666333130303433
+          36343862353836633361646565343537373137616132396431303237646130633261313731356434
+          6632346636616630380a643131336433303638303261633639333061636461633130636436663131
+          6638
 ansible_connection: httpapi
 ansible_network_os: nxos
 ansible_python_interpreter: ~/projects/webhook-listener-venv/bin/python
@@ -7,3 +27,5 @@ vlans:
   - { name: 'dev', vlan_id: '1000', native: 'no' }
   - { name: 'prod', vlan_id: '1001', native: 'no' }
   - { name: 'test', vlan_id: '1002', native: 'no' }
+
+vlan_range: "1000-1002"

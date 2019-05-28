@@ -8,9 +8,6 @@
 cd ~/projects/ansible-configurations
 git pull
 
-#### Retrive enviroment variables that are needed for NXOS Ansible
-$(ansible-vault view env_vars.yml --vault-password-file ~/.vault_pass.txt)
-
 #### Cycle through cmdline parameters, each one represents an Ansible
 #### configuration directory. A parameter representing a configuration
 #### will only be passed to this script if an update was detected to
@@ -20,7 +17,7 @@ for DOMAIN in "$@"
 do
   echo "Processing site.yml for domain: " ${DOMAIN}
   cd ${DOMAIN}
-  ansible-playbook -i inventory site.yml
+  ansible-playbook -i inventory site.yml --vault-password-file=~/.vault_pass.txt
 
   if [[ -e site.retry ]]; then
     rm site.retry
@@ -29,6 +26,3 @@ do
   cd ..
 done
 
-#### unset NXOS authentication environment variables
-unset ANSIBLE_NET_USERNAME
-unset ANSIBLE_NET_PASSWORD

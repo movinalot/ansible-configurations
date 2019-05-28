@@ -5,7 +5,7 @@
 #         Cisco Systems, Inc.
 #
 ###########################################################
-#           Playbook to configure UCS VLANs               #
+#           Playbook to manage UCS VLANs                  #
 ###########################################################
 
 - name: UCS VLAN Management
@@ -24,7 +24,10 @@
         username: "{{ ucs_username }}"
         password: "{{ ucs_password }}"
 
-  - name: Configure VLANs
+  - debug:
+      msg: ucs_state is {{ ucs_state }}
+
+  - name: Configure VLAN
     ucs_vlans:
       <<: *login_info
       name: "{{ item.name }}"
@@ -33,4 +36,16 @@
       state: "{{ ucs_state }}"
     loop:
       "{{ vlans }}"
+    when: ucs_state == 'present'
 
+
+  - name: Remove VLAN
+    ucs_vlans:
+      <<: *login_info
+      name: "{{ item.name }}"
+      id: "{{ item.id }}"
+      native: "{{ item.native }}"
+      state: "{{ ucs_state }}"
+    loop:
+      "{{ vlans }}"
+    when: ucs_state == 'absent'

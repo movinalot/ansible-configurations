@@ -5,7 +5,7 @@
 #         Cisco Systems, Inc.
 #
 ###########################################################
-#           Playbook to configure nxos switches           #
+#           Playbook to manage nxos switches              #
 ###########################################################
 
   - name: Configure VLANs
@@ -14,10 +14,19 @@
     gather_facts: no
 
     tasks:
-    - name: "Configure VLANs"
+    - debug:
+        msg: nxos_state is {{ nxos_state }}
+
+    - name: "Configure VLAN"
       nxos_vlan:
-        host: "{{ inventory_hostname }}"
         vlan_id: "{{ item.vlan_id }}"
         name: "{{ item.name }} "
         state: "{{ nxos_state }}"
+      when: nxos_state == 'present'
       with_items: "{{ vlans }}"
+
+    - name: "Remove VLAN"
+      nxos_vlan:
+        vlan_range: "{{ vlan_range }}"
+        state: "{{ nxos_state }}"
+      when: nxos_state == 'absent'

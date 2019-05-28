@@ -24,41 +24,27 @@
         username: "{{ aci_username }}"
         password: "{{ aci_password }}"
 
-  - name: Configure Tenant
+  - debug:
+      msg: aci_state is {{ aci_state }}
+
+  - name: CONFIGURE TENANT
     aci_tenant:
       <<: *login_info
       tenant: "{{ tenant_name }}"
-      description: "Tenant Created Using Ansible"
+      description: "Tenant Created/Configured Using Ansible"
       state: "{{ aci_state }}"
       validate_certs: false
+    when: aci_state == 'present'
 
-  - name: ENSURE TENANT VRF EXISTS
-    aci_vrf:
+  - name: TENANT NETWORKING
+    include_tasks:
+      file: tenant_tasks.yml
+    when: aci_state == 'present'
+
+  - name: DELETE TENANT
+    aci_tenant:
       <<: *login_info
       tenant: "{{ tenant_name }}"
-      vrf: "{{ vrf | default('prod_vrf')}}"
-      description: "VRF Created Using Ansible"
       state: "{{ aci_state }}"
       validate_certs: false
-
-  - name: ENSURE TENANT BRIDGE DOMAIN EXISTS
-    aci_bd:
-      <<: *login_info
-      tenant: "{{ tenant_name }}"
-      bd: "{{ bd | default('prod_bd') }}"
-      vrf: "{{ vrf | default('prod_vrf')}}"
-      description: "BD Created Using Ansible"
-      state: "{{ aci_state }}"
-      validate_certs: false
-
-  - name: ENSURE TENANT SUBNET EXISTS
-    aci_bd_subnet:
-      <<: *login_info
-      tenant: "{{ tenant_name }}"
-      bd: "{{ bd | default('prod_bd')}}"
-      gateway: "10.1.100.1"
-      mask: 24
-      scope: "public"
-      description: "Subnet Created Using Ansible"
-      state: "{{ aci_state }}"
-      validate_certs: false
+    when: aci_state == 'absent'
