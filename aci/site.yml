@@ -4,9 +4,9 @@
 # Author: John McDonough (jomcdono@cisco.com)
 #         Cisco Systems, Inc.
 #
-###########################################################
-#           Playbook to configure ACI Tenant              #
-###########################################################
+#############################
+#  Playbook for ACI TENANTS #
+#############################
 
 - name: ACI Tenant Management
   hosts: aci

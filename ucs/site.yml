@@ -4,9 +4,9 @@
 # Author: John McDonough (jomcdono@cisco.com)
 #         Cisco Systems, Inc.
 #
-###########################################################
-#           Playbook to manage UCS VLANs                  #
-###########################################################
+#############################
+#  Playbook for UCS VLANs   #
+#############################
 
 - name: UCS VLAN Management
   hosts: ucs

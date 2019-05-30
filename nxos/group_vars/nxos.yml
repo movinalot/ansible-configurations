@@ -1,3 +1,5 @@
+# NXOS Ansible vars
+
 nxos_state: present
 
 vlans:

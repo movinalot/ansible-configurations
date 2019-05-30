@@ -4,11 +4,11 @@
 # Author: John McDonough (jomcdono@cisco.com)
 #         Cisco Systems, Inc.
 #
-###########################################################
-#           Playbook to manage nxos switches              #
-###########################################################
+#############################
+#  Playbook for NXOS VLANS  #
+#############################
 
-  - name: Configure VLANs
+  - name: NXOS VLAN Management
     hosts: nxos
     connection: local
     gather_facts: no
