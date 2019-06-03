@@ -1,6 +1,6 @@
 # UCS Ansible vars
 
-ucs_state: pres
+ucs_state: present
 
 vlans:
   - { name: 'dev', id: '1000', native: 'no' }
