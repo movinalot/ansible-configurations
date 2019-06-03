@@ -27,6 +27,10 @@
   - debug:
       msg: ucs_state is {{ ucs_state }}
 
+  - name: Include Tenant vars
+    include_vars:
+      file: "{{ app_name }}.yml"
+
   - name: Configure VLAN
     ucs_vlans:
       <<: *login_info

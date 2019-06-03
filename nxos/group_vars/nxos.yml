@@ -1,13 +1,7 @@
 # NXOS Ansible vars
 
-nxos_state: present
-
-vlans:
-  - { name: 'dev', vlan_id: '1000', native: 'no' }
-  - { name: 'prod', vlan_id: '1001', native: 'no' }
-  - { name: 'test', vlan_id: '1002', native: 'no' }
-
-vlan_range: "1000-1002"
+nxos_state: absent
+app_name: app_01
 
 ansible_user: admin
 # Protect variable with ansible-vault, here is how to make the vault string below

@@ -1,11 +1,7 @@
 # UCS Ansible vars
 
-ucs_state: present
-
-vlans:
-  - { name: 'dev', id: '1000', native: 'no' }
-  - { name: 'prod', id: '1001', native: 'no' }
-  - { name: 'test', id: '1002', native: 'no' }
+ucs_state: absent
+app_name: app_01
 
 #ucs_username: admin
 # Protect variable with ansible-vault, here is how to make the vault string below

@@ -29,8 +29,7 @@
 
   - name: Include Tenant vars
     include_vars:
-      dir: vars
-      file: "{{ tenant_name }}.yml"
+      file: "{{ app_name }}.yml"
 
   - name: CONFIGURE TENANT
     aci_tenant:
