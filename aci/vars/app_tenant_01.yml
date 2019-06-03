@@ -1,0 +1,4 @@
+vrf: app_01_vrf
+bridge_domain: app_01_bd
+gateway: "10.1.100.1"
+mask: 24

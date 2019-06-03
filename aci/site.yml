@@ -27,6 +27,11 @@
   - debug:
       msg: aci_state is {{ aci_state }}
 
+  - name: Include Tenant vars
+    include_vars:
+      dir: vars
+      file: "{{ tenant_name }}.yml"
+
   - name: CONFIGURE TENANT
     aci_tenant:
       <<: *login_info

@@ -1,12 +1,7 @@
 # ACI Ansible vars
 
 aci_state: present
-
-tenant_name: App_Tenant
-vrf: app_vrf
-bridge_domain: app_bd
-gateway: "10.1.100.1"
-mask: 24
+tenant_name: app_tenant_01
 
 aci_username: admin
 # Protect variable with ansible-vault, here is how to make the vault string below

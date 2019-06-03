@@ -9,6 +9,11 @@
       username: "{{ aci_username }}"
       password: "{{ aci_password }}"
 
+- name: Include Tenant vars
+  include_vars:
+    dir: vars
+    file: "{{ tenant_name }}.yml"
+
 - name: ENSURE TENANT VRF EXISTS
   aci_vrf:
     <<: *login_info
