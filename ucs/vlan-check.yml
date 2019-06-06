@@ -21,6 +21,10 @@
         username: "{{ ucs_username }}"
         password: "{{ ucs_password }}"
 
+  - name: Include Tenant vars
+    include_vars:
+      file: "{{ app_name }}.yml"
+
   - name: Query UCS
     ucs_query:
       <<: *login_info
@@ -30,7 +34,6 @@
   - name: build array of vlan ids
     set_fact:
       vlans_check: "{{ vlans | map(attribute='id') | list }}"
-
 
   - debug:
       msg: "vlanId {{ item.id }} has been found"
