@@ -1,0 +1,40 @@
+---
+
+#
+# Author: John McDonough (jomcdono@cisco.com)
+#         Cisco Systems, Inc.
+#
+
+- name: UCS Query
+  hosts: ucs
+  connection: local
+  gather_facts: no
+
+  tasks:
+  - name: Test that we have a UCS hostname, UCS username, and UCS password
+    fail:
+      msg: 'Please define the following variables: ucs_hostname, ucs_username and ucs_password.'
+    when: ucs_hostname is not defined or ucs_username is not defined or ucs_password is not defined
+    vars:
+      login_info: &login_info
+        hostname: "{{ ucs_hostname }}"
+        username: "{{ ucs_username }}"
+        password: "{{ ucs_password }}"
+
+  - name: Query UCS
+    ucs_query:
+      <<: *login_info
+      class_ids: fabricVlan
+    register: response
+
+  - name: build array of vlan ids
+    set_fact:
+      vlans_check: "{{ vlans | map(attribute='id') | list }}"
+
+
+  - debug:
+      msg: "vlanId {{ item.id }} has been found"
+    with_items: "{{ response.objects.fabricVlan }}"
+    loop_control:
+      label: "{{item.id}}"
+    when: item.id in vlans_check
