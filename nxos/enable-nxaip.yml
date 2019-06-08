@@ -1,0 +1,19 @@
+---
+
+#
+# Author: John McDonough (jomcdono@cisco.com)
+#         Cisco Systems, Inc.
+#
+
+- name: NXOS Query
+  hosts: nxos
+  connection: local
+
+  tasks:
+  - name: Enable NX-API
+    vars:
+      ansible_connection: network_cli
+      ansible_network_os: nxos
+    nxos_nxapi:
+        enable_http: yes
+        enable_https: yes

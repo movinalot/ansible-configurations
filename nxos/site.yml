@@ -23,7 +23,7 @@
 
   - name: "Configure VLAN"
     nxos_vlan:
-      vlan_id: "{{ item.vlan_id }}"
+      vlan_id: "{{ item.id }}"
       name: "{{ item.name }} "
       state: "{{ nxos_state }}"
     when: nxos_state == 'present'

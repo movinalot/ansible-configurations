@@ -1,0 +1,51 @@
+---
+
+#
+# Author: John McDonough (jomcdono@cisco.com)
+#         Cisco Systems, Inc.
+#
+
+- name: ACI Query
+  hosts: aci
+  connection: local
+  gather_facts: no
+
+  tasks:
+  - name: Test that we have an ACI hostname, username, and password
+    fail:
+      msg: 'Please define the variables: aci_hostname, aci_username and aci_password.'
+    when: aci_hostname is not defined or aci_username is not defined or aci_password is not defined
+    vars:
+      login_info: &login_info
+        hostname: "{{ aci_hostname }}"
+        username: "{{ aci_username }}"
+        password: "{{ aci_password }}"
+
+  - name: Include Tenant vars
+    include_vars:
+      file: "{{ app_name }}.yml"
+
+  - name: Query TENANT
+    aci_tenant:
+      <<: *login_info
+      tenant: "{{ tenant_name }}"
+      description: "Tenant Created/Configured Using Ansible"
+      state: query
+      validate_certs: false
+    register: response
+
+  - name: Tenants found in ACI
+    debug:
+      msg: "{{ response }}"
+
+  - name: Check for returned tenant
+    set_fact:
+      tenant_check: "{{ response.current | length }}"
+
+  - debug:
+      msg: "Tenant {{ tenant_name }} not found"
+    when: tenant_check=="0"
+
+  - debug:
+      msg: "Tenant {{ tenant_name }} found"
+    when: tenant_check>"0"

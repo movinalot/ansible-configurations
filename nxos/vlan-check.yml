@@ -1,0 +1,40 @@
+---
+
+#
+# Author: John McDonough (jomcdono@cisco.com)
+#         Cisco Systems, Inc.
+#
+
+- name: NXOS Query
+  hosts: nxos
+  connection: local
+
+  tasks:
+  - name: Include Tenant vars
+    include_vars:
+      file: "{{ app_name }}.yml"
+
+  - name: Query NXOS
+    nxos_facts:
+      gather_subset: all
+    register: response
+
+  - name: VLANs found on NXOS Device
+    debug:
+      msg: "{{ response.ansible_facts.vlan_list }}"
+
+  - name: build array of vlan ids from tenant var file
+    set_fact:
+      vlans_check: "{{ vlans | map(attribute='id') | list }}"
+
+  - name: VLANs Required by Tenant
+    debug:
+      msg: "{{ vlans_check }}"
+
+  - name: Check for VLAN Existance
+    debug:
+      msg: "vlanId {{ item }} has been found"
+    with_items: "{{ response.ansible_facts.vlan_list }}"
+    loop_control:
+      label: "{{ item }}"
+    when: item in vlans_check
