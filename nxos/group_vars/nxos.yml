@@ -1,6 +1,6 @@
 # NXOS Ansible vars
 
-nxos_state: present
+nxos_state: absent
 app_name: app_01
 
 ansible_user: admin
