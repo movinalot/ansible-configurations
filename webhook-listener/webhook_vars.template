@@ -1,0 +1,2 @@
+export WEBEX_TEAMS_ACCESS_TOKEN=<put you access token here>
+export WEBEX_TEAMS_DEST_ROOM_ID=<put the destination room ID here>
