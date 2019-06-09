@@ -40,7 +40,7 @@
       validate_certs: false
     when: aci_state == 'present'
 
-  - name: TENANT NETWORKING
+  - name: TENANT TASKS
     include_tasks:
       file: tenant_tasks.yml
     when: aci_state == 'present'

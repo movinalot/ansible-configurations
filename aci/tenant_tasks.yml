@@ -21,7 +21,6 @@
     description: "VRF Created Using Ansible"
     state: "{{ aci_state }}"
     validate_certs: false
-  when: aci_state == 'present'
 
 - name: ENSURE TENANT BRIDGE DOMAIN EXISTS
   aci_bd:
@@ -32,7 +31,6 @@
     description: "Bridge Domain Created Using Ansible"
     state: "{{ aci_state }}"
     validate_certs: false
-  when: aci_state == 'present'
 
 - name: ENSURE TENANT SUBNET EXISTS
   aci_bd_subnet:
@@ -45,4 +43,79 @@
     description: "Subnet Created Using Ansible"
     state: "{{ aci_state }}"
     validate_certs: false
-  when: aci_state == 'present'
+
+- name: ENSURE TENANT FILTERS EXIST
+  aci_filter:
+    <<: *login_info
+    tenant: "{{ tenant_name }}"
+    filter: "{{ item }}"
+    descr: "Filter Created Using Ansible"
+    state: "{{ aci_state }}"
+    validate_certs: false
+  with_items:
+    - "https"
+    - "sql"
+
+- name: ENSURE FILTERS HAVE FILTER ENTRIES
+  aci_filter_entry:
+    <<: *login_info
+    state: "{{ aci_state }}"
+    validate_certs: False
+    tenant: "{{ tenant_name }}"
+    filter: "{{ item.filter }}"
+    entry: "{{ item.entry }}"
+    ether_type: "ip"
+    ip_protocol: "tcp"
+    dst_port_start: "{{ item.port }}"
+    dst_port_end: "{{ item.port }}"
+  with_items:
+    - filter: "https"
+      entry: "https"
+      port: 443
+    - filter: "sql"
+      entry: "sql"
+      port: 1433
+
+- name: ENSURE TENANT CONTRACTS EXIST
+  aci_contract:
+    <<: *login_info
+    state: "{{ aci_state }}"
+    validate_certs: False
+    tenant: "{{ tenant_name }}"
+    contract: "{{ item }}"
+    scope: "context"
+    description: "Contract Created Using Ansible"
+  with_items:
+    - "web"
+    - "sql"
+
+- name: ENSURE CONTRACTS HAVE CONTRACT SUBJECTS
+  aci_contract_subject:
+    <<: *login_info
+    state: "{{ aci_state }}"
+    validate_certs: False
+    tenant: "{{ tenant_name }}"
+    contract: "{{ item.contract }}"
+    subject: "{{ item.subject }}"
+  with_items:
+    - contract: "web"
+      subject: "https"
+    - contract: "sql"
+      subject: "sql"
+
+- name: ENSURE CONTRACTS SUBJECTS ARE ASSOCIATED WITH FILTERS
+  aci_contract_subject_to_filter:
+    <<: *login_info
+    state: "{{ aci_state }}"
+    validate_certs: False
+    tenant: "{{ tenant_name }}"
+    contract: "{{ item.contract }}"
+    subject: "{{ item.subject }}"
+    filter: "{{ item.filter }}"
+  with_items:
+    - contract: "web"
+      subject: "https"
+      filter: "https"
+    - contract: "sql"
+      subject: "sql"
+      filter: "sql"
