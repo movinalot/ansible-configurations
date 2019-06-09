@@ -1,4 +1,7 @@
 vlans:
   - { name: 'dev', id: '1000', native: 'no' }
   - { name: 'prod', id: '1001', native: 'no' }
-  - { name: 'test', id: '1002', native: 'no' }
+
+vnics:
+  - { name: 'vnic0', fabric: 'A', org_dn: 'org-root' }
+  - { name: 'vnic1', fabric: 'B', org_dn: 'org-root' }

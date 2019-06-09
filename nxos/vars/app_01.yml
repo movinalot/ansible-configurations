@@ -1,6 +1,5 @@
 vlans:
   - { name: 'dev', id: '1000' }
   - { name: 'prod', id: '1001' }
-  - { name: 'test', id: '1002' }
 
-vlan_range: "1000-1002"
+vlan_range: "1000-1001"

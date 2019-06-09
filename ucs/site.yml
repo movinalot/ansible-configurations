@@ -38,10 +38,23 @@
       id: "{{ item.id }}"
       native: "{{ item.native }}"
       state: "{{ ucs_state }}"
-    loop:
+    with_items:
       "{{ vlans }}"
     when: ucs_state == 'present'
 
+  - name: Configure vNIC template VLANs
+    ucs_vnic_template:
+      <<: *login_info
+      name: "{{ item.0.name }}"
+      fabric: "{{ item.0.fabric }}"
+      org_dn: "{{ item.0.org_dn }}"
+      vlans_list:
+      - name: "{{ item.1.name }}"
+        native: "{{ item.1.native }}"
+        state: "{{ ucs_state }}"
+    with_nested:
+      - "{{ vnics }}"
+      - "{{ vlans }}"
 
   - name: Remove VLAN
     ucs_vlans:
@@ -50,6 +63,6 @@
       id: "{{ item.id }}"
       native: "{{ item.native }}"
       state: "{{ ucs_state }}"
-    loop:
+    with_items:
       "{{ vlans }}"
     when: ucs_state == 'absent'
