@@ -1,6 +1,6 @@
 # Ansible Configurations
 
-This is repo is an example of using Ansible to manage multiple data center domains.
+This repo is an example of using Ansible to manage multiple data center domains.
 
 There are examples for ACI, NXOS, and UCS. Each example provides a check/monitor and a create/update/remove component to the aspect of the domain that is being managed.
 
@@ -11,6 +11,7 @@ Additionally there is python code for a simple Flask based webservice that liste
 * Status:  This is Beta code that will change as additional configurations and checks are added to the repository.
 
 ## Walk, Run, Fly
+
 
 ### Walk
 
