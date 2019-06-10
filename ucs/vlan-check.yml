@@ -35,7 +35,8 @@
     set_fact:
       vlans_check: "{{ vlans | map(attribute='id') | list }}"
 
-  - debug:
+  - name: Check if VLAN exists
+    debug:
       msg: "vlanId {{ item.id }} has been found"
     with_items: "{{ response.objects.fabricVlan }}"
     loop_control:
