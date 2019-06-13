@@ -1,6 +1,6 @@
 # UCS Ansible vars
 
-ucs_state: present
+ucs_state: absent
 app_name: app_01
 
 #ucs_username: admin
