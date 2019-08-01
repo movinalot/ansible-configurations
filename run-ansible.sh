@@ -1,7 +1,7 @@
 
 #!/bin/bash
 
-#### Written by: John McDonough - movinalot
+#### Written by: John McDonough - @movinalot
 #### Description: Runs Ansible update based on updated site.yml
 
 #### This script is triggered by github push, pull the repo
@@ -13,11 +13,17 @@ git pull
 #### will only be passed to this script if an update was detected to
 #### files in it's directory.
 
+#### Dependencies
+####   The password for ansible-vault is stored in a file called
+####   .vault_pass.txt in the directory of the user that runs this script
+####
+
 for DOMAIN in "$@"
 do
   if [[ -e ${DOMAIN}/site.yml ]]; then
     echo "Processing site.yml for domain: " ${DOMAIN}
     cd ${DOMAIN}
+    
     ansible-playbook -i inventory site.yml --vault-password-file=~/.vault_pass.txt
 
     if [[ -e site.retry ]]; then

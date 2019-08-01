@@ -49,7 +49,8 @@ def webhook_events():
                         if x.find("/") > 0
                         ] if item not in dirs_to_process and item in DOMAIN_DIRS]
 
-                print(dirs_to_process)
+                if dirs_to_process:
+                    print(dirs_to_process)
 
                 if dirs_to_process:
                     cmdline = (
