@@ -10,6 +10,7 @@ FLASK_APP = Flask(__name__)
 
 API = WebexTeamsAPI()
 WEBEX_TEAMS_DEST_ROOM_ID = os.environ['WEBEX_TEAMS_DEST_ROOM_ID']
+DOMAIN_DIRS = ['aci', 'nxos', 'ucs']
 PROCESS_WEBHOOK = True
 
 @FLASK_APP.route('/events', methods=['GET', 'POST'])
@@ -46,7 +47,7 @@ def webhook_events():
                         x[0:x.find("/")]
                         for x in commit[state]
                         if x.find("/") > 0
-                        ] if item not in dirs_to_process]
+                        ] if item not in dirs_to_process and item in DOMAIN_DIRS]
 
                 print(dirs_to_process)
 
