@@ -1,20 +1,18 @@
 """ Webhook Listener """
 
-# pylint: disable=invalid-name, too-many-nested-blocks
-
 import subprocess
 import os
 from flask import Flask, request
 
 from webexteamssdk import WebexTeamsAPI
 
-flask_app = Flask(__name__)
+FLASK_APP = Flask(__name__)
 
-api = WebexTeamsAPI()
+API = WebexTeamsAPI()
 WEBEX_TEAMS_DEST_ROOM_ID = os.environ['WEBEX_TEAMS_DEST_ROOM_ID']
 PROCESS_WEBHOOK = True
 
-@flask_app.route('/events', methods=['GET', 'POST'])
+@FLASK_APP.route('/events', methods=['GET', 'POST'])
 def webhook_events():
     """Processes incoming requests to the '/events' URI."""
 
@@ -32,7 +30,7 @@ def webhook_events():
               """
     elif request.method == 'POST':
 
-        # Get the POST data sent from Github
+        # Process the POST data sent from Github
         json_data = request.json
         print("\n")
         print("WEBHOOK POST RECEIVED:")
@@ -40,38 +38,49 @@ def webhook_events():
         print("\n")
 
         if PROCESS_WEBHOOK:
-            dirs_to_process = []
             for commit in json_data["commits"]:
-                for file_state in ['added', 'modified']:
-                    for file_name in commit[file_state]:
-                        if file_name.find("/") > 0:
-                            print(file_state + ":" + file_name)
-                            dir_to_process = file_name[0:file_name.find("/")]
-                            dirs_to_process.append(dir_to_process)
+                dirs_to_process = []
 
-            if dirs_to_process:
-                dirs_to_process_set = set(dirs_to_process)
-                dirs_to_process_uni = list(dirs_to_process_set)
-                print(" ".join(dirs_to_process_uni))
+                for state in ['added', 'modified']:
+                    _ = [dirs_to_process.append(item) for item in [
+                        x[0:x.find("/")]
+                        for x in commit[state]
+                        if x.find("/") > 0
+                        ] if item not in dirs_to_process]
 
-                result = subprocess.run(
-                    [
-                        (
-                            '~/projects/ansible-configurations/run-ansible.sh '
-                            + ' '.join(dirs_to_process_uni)
-                        )
-                    ],
-                    shell=True,
-                    stdout=subprocess.PIPE,
-                    stderr=subprocess.PIPE
-                )
-                print(result.stdout)
-                print(result.stderr)
+                print(dirs_to_process)
 
-                api.messages.create(
-                    WEBEX_TEAMS_DEST_ROOM_ID,
-                    text=result.stdout.decode("utf-8")
-                )
+                if dirs_to_process:
+                    cmdline = (
+                        '~/projects/ansible-configurations/run-ansible.sh '
+                        + ' '.join(dirs_to_process)
+                    )
+                    print(cmdline)
+
+                    result = subprocess.run(
+                        [cmdline],
+                        shell=True,
+                        stdout=subprocess.PIPE,
+                        stderr=subprocess.PIPE
+                    )
+
+                    message = (
+                        'Committer: ' + commit['committer']['name'] +
+                        ' - ' + commit['committer']['email'] + '\n'
+                    )
+
+                    message += 'Commit Message: ' + commit['message'] + '\n'
+                    message += 'stdout result: \n'
+                    message += result.stdout.decode("utf-8") + '\n'
+                    message += 'stderr result: \n'
+                    message += result.stderr.decode("utf-8") + '\n'
+
+                    print(message)
+
+                    API.messages.create(
+                        WEBEX_TEAMS_DEST_ROOM_ID,
+                        text=message
+                    )
 
         doc = """
                 <!DOCTYPE html>
@@ -85,7 +94,7 @@ def webhook_events():
                   </html>
               """
 
-    response = flask_app.response_class(
+    response = FLASK_APP.response_class(
         response=doc,
         status=200,
         mimetype='text/html'
@@ -96,4 +105,4 @@ def webhook_events():
 
 if __name__ == '__main__':
     # Start the Flask web server
-    flask_app.run(host='0.0.0.0', port=5403)
+    FLASK_APP.run(host='0.0.0.0', port=5403)

@@ -15,14 +15,16 @@ git pull
 
 for DOMAIN in "$@"
 do
-  echo "Processing site.yml for domain: " ${DOMAIN}
-  cd ${DOMAIN}
-  ansible-playbook -i inventory site.yml --vault-password-file=~/.vault_pass.txt
+  if [[ -e ${DOMAIN}/site.yml ]]; then
+    echo "Processing site.yml for domain: " ${DOMAIN}
+    cd ${DOMAIN}
+    ansible-playbook -i inventory site.yml --vault-password-file=~/.vault_pass.txt
 
-  if [[ -e site.retry ]]; then
-    rm site.retry
-  fi
+    if [[ -e site.retry ]]; then
+      rm site.retry
+    fi
   
-  cd ..
+    cd ..
+  fi
 done
 
