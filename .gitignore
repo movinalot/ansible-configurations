@@ -2,3 +2,6 @@
 .vscode/
 # Python stuff...
 venv/
+
+# MAC Stuff
+.DS_Store
