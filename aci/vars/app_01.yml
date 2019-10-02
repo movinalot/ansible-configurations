@@ -1,5 +1,78 @@
-tenant_name: app_01
+tenant_name: AAA_Tenant
+
+ap_description: Application Profile Created Using Ansible
+
+bds: 
+  - app_01_bd_01
+  - app_01_bd_02
+bd_description: Bridge Domain Created Using Ansible
+
+bd_subnets:
+  - bd: app_01_bd_01
+    bd_gateway: 10.1.100.1
+    bd_mask: 24
+    bd_scope: public
+  - bd: app_01_bd_02
+    bd_gateway: 10.1.100.2
+    bd_mask: 24
+    bd_scope: public
+bd_subnet_description: Subnet Created Using Ansible
+
+contract_description: Contract Created Using Ansible
+contract_scope: context
+contracts:
+  - web
+  - sql
+
+contract_subjects:
+  - contract: web
+    subject: https
+  - contract: sql
+    subject: sql
+
+contracts_to_filters:
+  - contract: web
+    subject: https
+    filter: https
+  - contract: sql
+    subject: sql
+    filter: sql
+
+epgs:
+  - epg: app_01_epg_web
+    bd: app_01_bd_01
+  - epg: app_01_epg_db
+    bd: app_01_bd_02
+epg_description: EGP Created Using Ansible
+
+epg_to_contracts:
+  - epg: app_01_epg_web
+    contract: web
+    contract_type: provider
+  - epg: app_01_epg_db
+    contract: sql
+    contract_type: provider
+  - epg: app_01_epg_web
+    contract: sql
+    contract_type: consumer
+  - epg: app_01_epg_db
+    contract: web
+    contract_type: consumer
+
+filter_description: Filter Created Using Ansible
+filters:
+  - https
+  - sql
+
+filter_entry_ether_type: ip
+filter_entry_ip_protocol: tcp
+filter_entries:
+  - filter: https
+    entry: https
+    port: 443
+  - filter: sql
+    entry: sql
+    port: 1433
+
 vrf: app_01_vrf
-bridge_domain: app_01_bd
-gateway: "10.1.100.1"
-mask: 24
+vrf_description: VRF Created Using Ansible

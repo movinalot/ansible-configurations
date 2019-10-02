@@ -29,7 +29,6 @@
     aci_tenant:
       <<: *login_info
       tenant: "{{ tenant_name }}"
-      description: "Tenant Created/Configured Using Ansible"
       state: query
       validate_certs: false
     register: response

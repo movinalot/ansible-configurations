@@ -11,111 +11,93 @@
 
 - name: Include Tenant vars
   include_vars:
-    file: "{{ tenant_name }}.yml"
+    file: "{{ app_name }}.yml"
 
 - name: ENSURE TENANT VRF EXISTS
   aci_vrf:
     <<: *login_info
     tenant: "{{ tenant_name }}"
     vrf: "{{ vrf }}"
-    description: "VRF Created Using Ansible"
+    description: "{{ vrf_description }}"
     state: "{{ aci_state }}"
-    validate_certs: false
+    validate_certs: "{{ validate_certs }}"
 
 - name: ENSURE TENANT BRIDGE DOMAIN EXISTS
   aci_bd:
     <<: *login_info
     tenant: "{{ tenant_name }}"
-    bd: "{{ bridge_domain }}"
+    bd: "{{ item }}"
     vrf: "{{ vrf }}"
-    description: "Bridge Domain Created Using Ansible"
+    description: "{{ bd_description }} for {{ item }}"
     state: "{{ aci_state }}"
-    validate_certs: false
+    validate_certs: "{{ validate_certs }}"
+  loop: "{{ bds }}"
 
 - name: ENSURE TENANT SUBNET EXISTS
   aci_bd_subnet:
     <<: *login_info
     tenant: "{{ tenant_name }}"
-    bd: "{{ bridge_domain }}"
-    gateway: "{{ gateway }}"
-    mask: "{{ mask }}"
-    scope: "public"
-    description: "Subnet Created Using Ansible"
+    bd: "{{ item.bd }}"
+    gateway: "{{ item.bd_gateway }}"
+    mask: "{{ item.bd_mask }}"
+    scope: "{{ item.bd_scope }}"
+    description: "{{ bd_subnet_description }} for {{ item.bd }}"
     state: "{{ aci_state }}"
-    validate_certs: false
+    validate_certs: "{{ validate_certs }}"
+  loop: "{{ bd_subnets }}"
 
 - name: ENSURE TENANT FILTERS EXIST
   aci_filter:
     <<: *login_info
     tenant: "{{ tenant_name }}"
     filter: "{{ item }}"
-    descr: "Filter Created Using Ansible"
+    description: "{{ filter_description }} for {{ item }}"
     state: "{{ aci_state }}"
-    validate_certs: false
-  with_items:
-    - "https"
-    - "sql"
+    validate_certs: "{{ validate_certs }}"
+  loop: "{{ filters }}"
 
 - name: ENSURE FILTERS HAVE FILTER ENTRIES
   aci_filter_entry:
     <<: *login_info
-    state: "{{ aci_state }}"
-    validate_certs: False
     tenant: "{{ tenant_name }}"
     filter: "{{ item.filter }}"
     entry: "{{ item.entry }}"
-    ether_type: "ip"
-    ip_protocol: "tcp"
+    ether_type: "{{ filter_entry_ether_type }}"
+    ip_protocol: "{{ filter_entry_ip_protocol }}"
     dst_port_start: "{{ item.port }}"
     dst_port_end: "{{ item.port }}"
-  with_items:
-    - filter: "https"
-      entry: "https"
-      port: 443
-    - filter: "sql"
-      entry: "sql"
-      port: 1433
+    state: "{{ aci_state }}"
+    validate_certs: "{{ validate_certs }}"
+  loop: "{{ filter_entries }}"
 
 - name: ENSURE TENANT CONTRACTS EXIST
   aci_contract:
     <<: *login_info
-    state: "{{ aci_state }}"
-    validate_certs: False
     tenant: "{{ tenant_name }}"
     contract: "{{ item }}"
-    scope: "context"
-    description: "Contract Created Using Ansible"
-  with_items:
-    - "web"
-    - "sql"
+    scope: "{{ contract_scope }}"
+    description: "{{ contract_description }} for {{ item }}"
+    state: "{{ aci_state }}"
+    validate_certs: "{{ validate_certs }}"
+  loop: "{{ contracts }}"
 
 - name: ENSURE CONTRACTS HAVE CONTRACT SUBJECTS
   aci_contract_subject:
     <<: *login_info
-    state: "{{ aci_state }}"
-    validate_certs: False
     tenant: "{{ tenant_name }}"
     contract: "{{ item.contract }}"
     subject: "{{ item.subject }}"
-  with_items:
-    - contract: "web"
-      subject: "https"
-    - contract: "sql"
-      subject: "sql"
+    state: "{{ aci_state }}"
+    validate_certs: "{{ validate_certs }}"
+  loop: "{{ contract_subjects }}"
 
 - name: ENSURE CONTRACTS SUBJECTS ARE ASSOCIATED WITH FILTERS
   aci_contract_subject_to_filter:
     <<: *login_info
-    state: "{{ aci_state }}"
-    validate_certs: False
     tenant: "{{ tenant_name }}"
     contract: "{{ item.contract }}"
     subject: "{{ item.subject }}"
     filter: "{{ item.filter }}"
-  with_items:
-    - contract: "web"
-      subject: "https"
-      filter: "https"
-    - contract: "sql"
-      subject: "sql"
-      filter: "sql"
+    state: "{{ aci_state }}"
+    validate_certs: "{{ validate_certs }}"
+  loop: "{{contracts_to_filters}}"

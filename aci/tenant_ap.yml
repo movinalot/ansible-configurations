@@ -1,0 +1,47 @@
+---
+- name: Test that we have an ACI hostname, username, and password
+  fail:
+    msg: 'Please define the variables: aci_hostname, aci_username and aci_password.'
+  when: aci_hostname is not defined or aci_username is not defined or aci_password is not defined
+  vars:
+    login_info: &login_info
+      hostname: "{{ aci_hostname }}"
+      username: "{{ aci_username }}"
+      password: "{{ aci_password }}"
+
+- name: Include Tenant vars
+  include_vars:
+    file: "{{ app_name }}.yml"
+
+- name: ENSURE APPLICATION PROFILE EXISTS
+  aci_ap:
+    <<: *login_info
+    tenant: "{{ tenant_name }}"
+    ap: "{{ app_name }}"
+    description: "{{ ap_description }}"
+    state: "{{ aci_state }}"
+    validate_certs: "{{ validate_certs }}"
+
+- name: ENSURE EPG EXISTS
+  aci_epg:
+    <<: *login_info
+    tenant: "{{ tenant_name }}"
+    ap: "{{ app_name }}"
+    epg: "{{ item.epg }}"
+    description: "{{ epg_description }} for {{ item.epg }}"
+    bd: "{{ item.bd }}"
+    state: "{{ aci_state }}"
+    validate_certs: "{{ validate_certs }}"
+  loop: "{{ epgs }}"
+
+- name: ENSURE CONTRACT TO EPG BINDING EXISTS
+  aci_epg_to_contract:
+    <<: *login_info
+    tenant: "{{ tenant_name }}"
+    ap: "{{ app_name }}"
+    epg: "{{ item.epg }}"
+    contract: "{{ item.contract }}"
+    contract_type: "{{ item.contract_type }}"
+    state: "{{ aci_state }}"
+    validate_certs: "{{ validate_certs }}"
+  loop: "{{ epg_to_contracts }}"

@@ -25,3 +25,5 @@ aci_password: !vault |
           3932646264373066310a363061373366376163366238643666333634626261613434393963306530
           3465
 ansible_python_interpreter: ~/projects/webhook-listener-venv/bin/python
+
+validate_certs: false

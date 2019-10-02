@@ -37,7 +37,7 @@
       tenant: "{{ tenant_name }}"
       description: "Tenant Created/Configured Using Ansible"
       state: "{{ aci_state }}"
-      validate_certs: false
+      validate_certs: "{{ validate_certs }}"
     when: aci_state == 'present'
 
   - name: TENANT TASKS
@@ -45,10 +45,15 @@
       file: tenant_tasks.yml
     when: aci_state == 'present'
 
+  - name: TENANT AP TASKS
+    include_tasks:
+      file: tenant_ap.yml
+    when: aci_state == 'present'
+
   - name: DELETE TENANT
-    aci_tenant:
+    aci_ap:
       <<: *login_info
-      tenant: "{{ tenant_name }}"
+      ap: "{{ app_name }}"
       state: "{{ aci_state }}"
-      validate_certs: false
+      validate_certs: "{{ validate_certs }}"
     when: aci_state == 'absent'
