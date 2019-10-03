@@ -1,6 +1,6 @@
 # ACI Ansible vars
 
-aci_state: absent
+aci_state: present
 app_name: app_01
 
 aci_username: admin
