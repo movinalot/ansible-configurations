@@ -1,6 +1,6 @@
 # UCS Ansible vars
 
-ucs_state: present
+ucs_state: absent
 app_name: app_01
 
 #ucs_username: admin
@@ -13,7 +13,7 @@ ucs_username: !vault |
           62333132396330343935323239366134333362396163656330626361333434316634386437363664
           6632666237376237380a373239383238313564393961666661383366663261316134313439623734
           3934
-#ucs_password: password
+ucs_password: C1sco12345
 # Protect variable with ansible-vault, here is how to make the vault string below
 # ansible-vault encrypt_string --vault-id ~/.vault_pass.txt 'password' --name 'ucs_password'
 ucs_password: !vault |
