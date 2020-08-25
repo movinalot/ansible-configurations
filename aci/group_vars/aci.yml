@@ -1,7 +1,7 @@
 # ACI Ansible vars
 
 aci_state: present
-app_name: app_02
+app_name: app_01
 
 aci_username: admin
 # Protect variable with ansible-vault, here is how to make the vault string below
