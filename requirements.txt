@@ -12,6 +12,6 @@ requests==2.22.0
 requests-toolbelt==0.9.1
 six==1.12.0
 ucsmsdk==0.9.8
-urllib3==1.25.3
+urllib3==1.25.8
 webexteamssdk==1.1.1
 Werkzeug==0.15.4
